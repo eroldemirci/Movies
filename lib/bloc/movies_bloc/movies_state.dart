@@ -1,4 +1,4 @@
-import 'package:movies/models/movies_popular.dart';
+import '../../models/movies_popular.dart';
 
 abstract class MoviesPopularState {
   const MoviesPopularState();

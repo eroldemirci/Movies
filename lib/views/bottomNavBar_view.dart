@@ -1,16 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movies/views/google_map_view.dart';
-import 'package:movies/views/home_view.dart';
-import 'package:movies/views/main_screen.dart';
-import 'package:movies/views/search_view.dart';
-import 'package:movies/views/user_profile_view.dart';
+import 'package:get/get.dart';
+import '../controllers/isSignedin_rooter.dart';
+
+import 'google_map_view.dart';
+
+
+import 'main_screen.dart';
+import 'search_view.dart';
+import 'user_profile_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBar extends StatefulWidget {
   BottomNavBar({Key? key}) : super(key: key);
+
+  @override
+  _BottomNavBarState createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
   PersistentTabController? _controller =
       PersistentTabController(initialIndex: 0);
+  bool? isSignedIn;
+
+ 
+
+  
+
   List<Widget> _buildScreens() {
     return [
       MainScreen(),
@@ -43,6 +59,9 @@ class BottomNavBar extends StatelessWidget {
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.person),
         title: ("Profil"),
+        onPressed: (context) {
+          Get.to(IsSignedInRooter());
+        },
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

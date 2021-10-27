@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies/main.dart';
-import 'package:movies/views/home_view.dart';
-import 'package:movies/views/main_screen.dart';
-import 'package:movies/views/movie_detail_view.dart';
+import '../main.dart';
+import '../views/home_view.dart';
+import '../views/main_screen.dart';
+import '../views/movie_detail_view.dart';
 
 class RouteGeneration {
   static Route<dynamic> generateRoute(RouteSettings settings) {

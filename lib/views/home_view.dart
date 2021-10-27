@@ -1,17 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:movies/bloc/movies_bloc/cubit.dart';
-import 'package:movies/bloc/movies_bloc/movies_state.dart';
-import 'package:movies/bloc/movies_detail_bloc/cubit.dart';
-import 'package:movies/bloc/movies_playing_now_bloc/cubit.dart';
-import 'package:movies/bloc/movies_playing_now_bloc/state.dart';
-import 'package:movies/database/controller.dart';
-import 'package:movies/models/movies_favorite.dart';
-import 'package:movies/models/movies_playing_now.dart';
-import 'package:movies/utils/textStyles.dart';
+import 'package:movies/controllers/auth_controller.dart';
+import 'package:movies/models/movies_detail.dart';
+import 'package:movies/widgets/user_favorites_card_widget.dart';
+import '../bloc/movies_bloc/cubit.dart';
+import '../bloc/movies_bloc/movies_state.dart';
+import '../bloc/movies_detail_bloc/cubit.dart';
+import '../bloc/movies_playing_now_bloc/cubit.dart';
+import '../bloc/movies_playing_now_bloc/state.dart';
+import '../database/controller.dart';
+import '../models/movies_favorite.dart';
+import '../models/movies_playing_now.dart';
+import '../utils/textStyles.dart';
 
-import 'package:movies/widgets/playingNow_card_widget.dart';
+import '../widgets/playingNow_card_widget.dart';
 
 import 'movie_detail_view.dart';
 
@@ -43,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
           SizedBox(
             height: 30,
           ),
-          moviesFavoritesRow(),
+          userFavoriteMoviesRow(),
           SizedBox(
             height: 100,
           ),
@@ -52,12 +57,95 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  Widget userFavoriteMoviesRow() {
+    return GetBuilder<AuthController>(builder: (_controller) {
+      return FirebaseAuth.instance.currentUser?.uid != null
+          ? StreamBuilder<DocumentSnapshot>(
+              stream: _controller.favorites,
+              builder: (context, snapshot) {
+                List? favoriteId = snapshot.data?['favoriteMovies'];
+                if (snapshot.hasData) {
+                  return Container(
+                    alignment: favoriteId?.length == 0
+                        ? Alignment.center
+                        : Alignment.centerLeft,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[850],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: favoriteId?.length != 0
+                        ? Container(
+                            height: 250,
+                            margin: const EdgeInsets.only(left: 8.0),
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              physics: BouncingScrollPhysics(),
+                              itemCount:
+                                  favoriteId != null ? favoriteId.length : 0,
+                              itemBuilder: (context, index) {
+                                int? movieId = favoriteId?[index];
+                              _controller.getMovieDetail(movieId);
+                              MoviesDetail? movie = _controller.movieDetail.value;
+                                return UserFavoriteMoviesCard(
+                                  movieId: movieId,
+                                  imagePath: movie?.posterPath,
+                                  rating: movie?.voteAverage,
+                                  title: movie?.originalTitle,
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(
+                                  width: 10,
+                                );
+                              },
+                            ),
+                          )
+                        : Container(
+                            alignment: Alignment.center,
+                            height: 200,
+                            child: Text(
+                              'Favori Listeniz Boş',
+                              style: titleStyle,
+                            ),
+                          ),
+                  );
+                }
+                return Container(
+                  child: Text(
+                    'Henüz giriş yapmadınız!',
+                    style: titleStyle,
+                  ),
+                );
+              })
+          : Container(
+              height: 200,
+              alignment: Alignment.center,
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                color: Colors.grey[850],
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                'Henüz giriş yapmadınız!',
+                style: titleStyle,
+              ),
+            );
+    });
+  }
+
   Widget moviesFavoritesRow() {
+    final _bloc = BlocProvider.of<MoviesDetailCubit>(context);
     return GetBuilder<FavoriteController>(
       builder: (_controller) {
         return Container(
           decoration: BoxDecoration(
-              color: Colors.grey[850], borderRadius: BorderRadius.circular(10)),
+            color: Colors.grey[850],
+            borderRadius: BorderRadius.circular(10),
+          ),
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Column(
             crossAxisAlignment: _controller.favorite.length != 0
@@ -79,11 +167,20 @@ class _HomeViewState extends State<HomeView> {
                           itemCount: _controller.favorite.length,
                           itemBuilder: (context, index) {
                             MoviesFavorite movie = _controller.favorite[index];
-                            return CardMoviesPlayingNow(
-                              id: movie.movieId,
-                              imagePath: movie.imagePath,
-                              title: movie.title,
-                              rating: movie.voteAverage,
+                            return InkWell(
+                              onTap: () {
+                                _bloc.setMovieId(movie.movieId);
+
+                                Get.to(MovieDetailView(
+                                  imagePath: movie.imagePath,
+                                ));
+                              },
+                              child: CardMoviesPlayingNow(
+                                id: movie.movieId,
+                                imagePath: movie.imagePath,
+                                title: movie.title,
+                                rating: movie.voteAverage,
+                              ),
                             );
                           },
                           separatorBuilder: (context, index) {

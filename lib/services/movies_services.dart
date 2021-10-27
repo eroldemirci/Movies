@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:movies/models/movies_cast.dart';
-import 'package:movies/models/movies_detail.dart';
-import 'package:movies/models/movies_images.dart';
+import '../models/movies_cast.dart';
+import '../models/movies_detail.dart';
+import '../models/movies_images.dart';
 
-import 'package:movies/models/movies_playing_now.dart';
-import 'package:movies/models/movies_popular.dart';
-import 'package:movies/models/movies_searchResponse.dart';
-import 'package:movies/models/movies_similiar.dart';
-import 'package:movies/models/movies_videos.dart';
-import 'package:movies/utils/servide_urls.dart';
+import '../models/movies_playing_now.dart';
+import '../models/movies_popular.dart';
+import '../models/movies_searchResponse.dart';
+import '../models/movies_similiar.dart';
+import '../models/movies_videos.dart';
+import '../utils/servide_urls.dart';
 
 class MoviesService {
   static const API_KEY = 'b73079f95004009e631f7d132933d45e';
   http.Client client = http.Client();
+  
+  
   Future<MoviesPopular?>? getMoviePopular(int pageNum) async {
     var response = await client.get(Uri.parse(MOVIES_BASEURL +
         'popular?api_key=' +

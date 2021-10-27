@@ -1,23 +1,32 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-import 'package:movies/bloc/movies_detail_bloc/cubit.dart';
-import 'package:movies/bloc/movies_search_bloc/cubit.dart';
-import 'package:movies/bloc/movies_videos_bloc/cubit.dart';
-import 'package:movies/repository/movies_repository.dart';
-import 'package:movies/utils/router.dart';
-import 'package:movies/views/bottomNavBar_view.dart';
+
+import 'bloc/movies_detail_bloc/cubit.dart';
+import 'bloc/movies_search_bloc/cubit.dart';
+import 'bloc/movies_videos_bloc/cubit.dart';
+import 'controllers/bindings/auth_binding.dart';
+import 'database/controller.dart';
+import 'repository/movies_repository.dart';
+
+import 'utils/router.dart';
+import 'views/bottomNavBar_view.dart';
 
 import 'bloc/movies_bloc/cubit.dart';
 import 'bloc/movies_playing_now_bloc/cubit.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MultiBlocProvider(providers: [
     BlocProvider(
       create: (context) => MoviesCubit(
         MovieRepository(),
       ),
     ),
+   
     BlocProvider(
       create: (context) => MoviesPlayingNowCubit(
         MovieRepository(),
@@ -45,7 +54,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Movieternal',
+      initialBinding: AuthBinding(),
       debugShowCheckedModeBanner: false,
       themeMode: ThemeMode.dark,
       theme: ThemeData(
@@ -73,6 +83,12 @@ class _DashBoardState extends State<DashBoard> {
   @override
   void initState() {
     super.initState();
+
+    GetBuilder<FavoriteController>(
+      builder: (controller) {
+        return Container();
+      },
+    );
     Future.delayed(Duration(seconds: 1)).whenComplete(
       () => Navigator.pushReplacement(
         context,

@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movies/bloc/movies_detail_bloc/movie_detail_state.dart';
-import 'package:movies/bloc/movies_search_bloc/movies_search_state.dart';
-import 'package:movies/database/controller.dart';
-import 'package:movies/models/movies_detail.dart';
-import 'package:movies/utils/servide_urls.dart';
-import 'package:movies/utils/textStyles.dart';
+import '../bloc/movies_detail_bloc/movie_detail_state.dart';
+import '../bloc/movies_search_bloc/movies_search_state.dart';
+import '../database/controller.dart';
+import '../models/movies_detail.dart';
+import '../utils/servide_urls.dart';
+import '../utils/textStyles.dart';
 
 class CustomWidgets {
   CustomWidgets(this.context);
@@ -26,17 +26,16 @@ class CustomWidgets {
             borderRadius: BorderRadius.circular(10),
             child: CachedNetworkImage(
               imageUrl: IMAGE_BASEURL + imagePath,
-              height:
-                  size.width <= 480 ? size.height * 0.19 : size.height * 0.28,
-              width: size.width <= 480 ? 80 : 80,
+              height: 250,
+              width: 150,
               fit: BoxFit.fill,
             ),
           )
         : ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Container(
-              height: size.width <= 480 ? size.height * 1.8 : size.height * 2.2,
-              width: 80,
+              height: 250,
+              width: 120,
               color: Colors.grey[850],
               child: Icon(
                 CupertinoIcons.film,

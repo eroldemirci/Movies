@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/utils/textStyles.dart';
+import '../utils/textStyles.dart';
 
 class GoogleMapView extends StatefulWidget {
   const GoogleMapView({Key? key}) : super(key: key);

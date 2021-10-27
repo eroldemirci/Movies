@@ -1,4 +1,4 @@
-import 'package:movies/models/movies_videos.dart';
+import '../../models/movies_videos.dart';
 
 abstract class MoviesVideosState {
   const MoviesVideosState();

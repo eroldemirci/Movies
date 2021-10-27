@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/bloc/movies_search_bloc/cubit.dart';
-import 'package:movies/bloc/movies_search_bloc/movies_search_state.dart';
-import 'package:movies/models/movies_searchResponse.dart';
+import '../bloc/movies_search_bloc/cubit.dart';
+import '../bloc/movies_search_bloc/movies_search_state.dart';
+import '../models/movies_searchResponse.dart';
 
-import 'package:movies/utils/textStyles.dart';
-import 'package:movies/view_model/search_view_model.dart';
+import '../utils/textStyles.dart';
+import '../view_model/search_view_model.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);

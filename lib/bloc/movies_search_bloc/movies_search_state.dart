@@ -1,4 +1,4 @@
-import 'package:movies/models/movies_searchResponse.dart';
+import '../../models/movies_searchResponse.dart';
 
 abstract class MoviesSearchState {
   const MoviesSearchState();

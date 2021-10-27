@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/bloc/movies_search_bloc/movies_search_state.dart';
-import 'package:movies/repository/movies_repository.dart';
+import 'movies_search_state.dart';
+import '../../repository/movies_repository.dart';
 
 class MoviesSearchCubit extends Cubit<MoviesSearchState> {
   MoviesSearchCubit(this._repository) : super(MoviesSearchInitialState());

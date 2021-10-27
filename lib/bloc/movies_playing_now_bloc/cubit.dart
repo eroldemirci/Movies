@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/bloc/movies_playing_now_bloc/state.dart';
-import 'package:movies/models/movies_playing_now.dart';
-import 'package:movies/repository/movies_repository.dart';
+import 'state.dart';
+import '../../models/movies_playing_now.dart';
+import '../../repository/movies_repository.dart';
 
 class MoviesPlayingNowCubit extends Cubit<MoviesPlayingNowState> {
   MoviesPlayingNowCubit(this._repository)

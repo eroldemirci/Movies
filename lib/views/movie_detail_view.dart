@@ -6,15 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
-import 'package:movies/bloc/movies_detail_bloc/cubit.dart';
-import 'package:movies/bloc/movies_detail_bloc/movie_detail_state.dart';
-import 'package:movies/database/controller.dart';
-import 'package:movies/models/movies_cast.dart';
-import 'package:movies/models/movies_detail.dart';
-import 'package:movies/utils/colors.dart';
-import 'package:movies/utils/textStyles.dart';
-import 'package:movies/widgets/custom_widgets.dart';
-import 'package:movies/widgets/playingNow_card_widget.dart';
+import '../bloc/movies_detail_bloc/cubit.dart';
+import '../bloc/movies_detail_bloc/movie_detail_state.dart';
+import '../database/controller.dart';
+import '../models/movies_cast.dart';
+import '../models/movies_detail.dart';
+import '../utils/colors.dart';
+import '../utils/textStyles.dart';
+import '../widgets/custom_widgets.dart';
+import '../widgets/playingNow_card_widget.dart';
 
 class MovieDetailView extends StatefulWidget {
   const MovieDetailView({Key? key, this.imagePath}) : super(key: key);
@@ -60,7 +60,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
               backgroundColor: Theme.of(context).backgroundColor,
               body: Center(
                 child: Text(
-                  " Beklenmedik Bir Hata Oluştu ",
+                  "${state.message} ",
                   textAlign: TextAlign.center,
                   style: titleStyle,
                 ),

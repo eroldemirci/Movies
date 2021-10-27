@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movies/database/controller.dart';
+import '../database/controller.dart';
 
-import 'package:movies/utils/textStyles.dart';
+import '../utils/textStyles.dart';
 
 class CardMoviesPlayingNow extends StatelessWidget {
   FavoriteController favController = Get.find<FavoriteController>();

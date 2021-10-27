@@ -1,22 +1,36 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:movies/utils/textStyles.dart';
+import 'package:get/get.dart';
+import 'package:movies/controllers/auth_controller.dart';
 
-class UserProfileView extends StatefulWidget {
-  const UserProfileView({Key? key}) : super(key: key);
+import '../utils/textStyles.dart';
 
-  @override
-  _UserProfileState createState() => _UserProfileState();
-}
-
-class _UserProfileState extends State<UserProfileView> {
+class UserProfileView extends GetWidget<AuthController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Center(
-        child: Text(
-          'User Profile',
-          style: titleBigStyle,
+      body: SafeArea(
+        child: GetBuilder<AuthController>(
+          builder: (_controller) {
+            return Column(children: [
+              Center(
+                child: InkWell(
+                  onTap: () {
+                    controller.signOut();
+                  },
+                  child: Text(
+                    'Çıkış Yap',
+                    style: titleStyle,
+                  ),
+                ),
+              ),
+              Text(
+                FirebaseAuth.instance.currentUser?.email ?? 'aa',
+                style: titleStyle,
+              )
+            ]);
+          },
         ),
       ),
     );

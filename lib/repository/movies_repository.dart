@@ -1,14 +1,24 @@
-import 'package:movies/models/movies_cast.dart';
-import 'package:movies/models/movies_detail.dart';
-import 'package:movies/models/movies_images.dart';
-import 'package:movies/models/movies_playing_now.dart';
-import 'package:movies/models/movies_popular.dart';
-import 'package:movies/models/movies_searchResponse.dart';
-import 'package:movies/models/movies_videos.dart';
-import 'package:movies/services/movies_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../models/movies_cast.dart';
+import '../models/movies_detail.dart';
+import '../models/movies_images.dart';
+import '../models/movies_playing_now.dart';
+import '../models/movies_popular.dart';
+import '../models/movies_searchResponse.dart';
+import '../models/movies_videos.dart';
+import '../services/auth_service.dart';
+import '../services/movies_services.dart';
 
 class MovieRepository {
   MoviesService _service = MoviesService();
+  AuthService _authService = AuthService();
+
+  Future<UserCredential?> createUserWithEmail(String email, String password)async{
+    UserCredential? response = await _authService.createUser(email, password);
+    return response;
+  }
+
   Future<MoviesPopular?> getPopularMovies(int pageNum) async {
     MoviesPopular? response = await _service.getMoviePopular(pageNum);
     print("Popular Repository " + response.toString());

@@ -1,16 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:movies/database/db_helper.dart';
-import 'package:movies/models/movies_favorite.dart';
+import 'db_helper.dart';
+import '../models/movies_favorite.dart';
+
 
 class FavoriteController extends GetxController {
   List<MoviesFavorite> favorite = [];
   Rx<List<int?>> movieIds = RxList<int?>().obs;
   RxBool isLoading = true.obs;
+  var name;
+  RxList fetchedMovieList = [].obs;
+  CollectionReference? user;
 
   @override
   void onInit() {
     refreshNotes();
+
     super.onInit();
   }
 
@@ -18,6 +24,13 @@ class FavoriteController extends GetxController {
   void onClose() {
     DatabaseHelper.instance.close();
     super.onClose();
+  }
+
+  setFavoriteMoviesList(var value) {
+    fetchedMovieList = value.obs;
+    print("Gelen ve listelenen filmler Firebase" + value.toString());
+    print("Gelen ve listelenen filmler" + fetchedMovieList.toString());
+    update();
   }
 
   Future refreshNotes() async {

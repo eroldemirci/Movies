@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+// ignore: must_be_immutable
 class DetailSelectedItem extends StatelessWidget {
   DetailSelectedItem({Key? key, this.title, this.description, this.imageUrl})
       : super(key: key);

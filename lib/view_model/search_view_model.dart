@@ -3,22 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:movies/bloc/movies_detail_bloc/cubit.dart';
-import 'package:movies/bloc/movies_search_bloc/cubit.dart';
-import 'package:movies/bloc/movies_search_bloc/movies_search_state.dart';
-import 'package:movies/models/movies_searchResponse.dart';
-import 'package:movies/utils/colors.dart';
+import '../bloc/movies_detail_bloc/cubit.dart';
+import '../bloc/movies_search_bloc/cubit.dart';
+import '../bloc/movies_search_bloc/movies_search_state.dart';
+import '../models/movies_searchResponse.dart';
+import '../utils/colors.dart';
 
-import 'package:movies/utils/textStyles.dart';
-import 'package:movies/views/movie_detail_view.dart';
-import 'package:movies/widgets/custom_widgets.dart';
+import '../utils/textStyles.dart';
+import '../views/movie_detail_view.dart';
+import '../widgets/custom_widgets.dart';
 
 class SearchViewModel {
   Widget appBarTextField(MoviesSearchCubit _bloc) {
     TextEditingController searchController = TextEditingController();
 
     return Container(
-      height: 40,
+      margin: EdgeInsets.symmetric(vertical: 20,),
+      height: 60,
       child: TextFormField(
         controller: searchController,
         onChanged: (value) {
@@ -46,20 +47,30 @@ class SearchViewModel {
           fillColor: Colors.white,
           filled: true,
           alignLabelWithHint: true,
-          hintStyle: TextStyle(color: Colors.grey[850]),
+          hintStyle: TextStyle(
+            color: Colors.grey[850],
+          ),
           hintText: 'Film Ara',
           hoverColor: Colors.grey[850],
-          labelStyle: TextStyle(color: Colors.grey[850]),
+          labelStyle: TextStyle(
+            color: Colors.grey[850],
+          ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
             borderRadius: BorderRadius.circular(10),
           ),
           border: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(
+              color: Colors.white,
+            ),
             borderRadius: BorderRadius.circular(10),
           ),
         ),
@@ -94,7 +105,7 @@ class SearchViewModel {
         ));
       },
       child: Container(
-        height: size.width <= 480 ? size.height * 0.2 : size.height * 0.3,
+        height: 250,
         width: size.width,
         child: Padding(
           padding: EdgeInsets.all(8.0),

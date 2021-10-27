@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/bloc/movies_bloc/movies_state.dart';
-import 'package:movies/models/movies_popular.dart';
-import 'package:movies/repository/movies_repository.dart';
+import 'movies_state.dart';
+import '../../models/movies_popular.dart';
+import '../../repository/movies_repository.dart';
 
 class MoviesCubit extends Cubit<MoviesPopularState> {
   MoviesCubit(this._repository) : super(MoviesPopularInitialState());

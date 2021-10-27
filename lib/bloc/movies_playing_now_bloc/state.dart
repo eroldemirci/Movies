@@ -1,4 +1,4 @@
-import 'package:movies/models/movies_playing_now.dart';
+import '../../models/movies_playing_now.dart';
 
 abstract class MoviesPlayingNowState {
   const MoviesPlayingNowState();

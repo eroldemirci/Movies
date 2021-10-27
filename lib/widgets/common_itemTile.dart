@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:movies/pages/details_page.dart';
+import '../pages/details_page.dart';
 
 class ItemListTile extends StatelessWidget {
   ItemListTile({this.title, this.description, this.imageUrl});

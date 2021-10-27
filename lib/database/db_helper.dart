@@ -1,4 +1,4 @@
-import 'package:movies/models/movies_favorite.dart';
+import '../models/movies_favorite.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

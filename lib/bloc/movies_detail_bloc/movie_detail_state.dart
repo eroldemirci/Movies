@@ -1,8 +1,8 @@
-import 'package:movies/models/movies_cast.dart';
-import 'package:movies/models/movies_detail.dart';
-import 'package:movies/models/movies_images.dart';
-import 'package:movies/models/movies_similiar.dart';
-import 'package:movies/models/movies_videos.dart';
+import '../../models/movies_cast.dart';
+import '../../models/movies_detail.dart';
+import '../../models/movies_images.dart';
+import '../../models/movies_similiar.dart';
+import '../../models/movies_videos.dart';
 
 abstract class MoviesDetailState {
   const MoviesDetailState();
@@ -17,13 +17,17 @@ class MoviesDetailLoadingState extends MoviesDetailState {
 }
 
 class MoviesDetailLoadedState extends MoviesDetailState {
-  const MoviesDetailLoadedState(this.response, this.responseImages,
-      this.responseSimiliar, this.responseCast, this.responseVideos);
+  const MoviesDetailLoadedState(
+    this.response,
+    this.responseImages,
+    this.responseSimiliar,
+    this.responseCast,
+  );
   final MoviesDetail? response;
   final MoviesImages? responseImages;
   final MoviesSimiliar? responseSimiliar;
   final MoviesCasts? responseCast;
-  final MoviesVideos? responseVideos;
+  // final MoviesVideos? responseVideos;
 
   @override
   bool operator ==(Object o) {
