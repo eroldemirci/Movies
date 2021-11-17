@@ -18,6 +18,7 @@ class UserProfileView extends GetWidget<AuthController> {
                 child: InkWell(
                   onTap: () {
                     controller.signOut();
+                    controller.userFavoriteIds.clear();
                   },
                   child: Text(
                     'Çıkış Yap',

@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:movies/controllers/auth_controller.dart';
 import '../database/controller.dart';
 
 import '../utils/textStyles.dart';
 
 class CardMoviesPlayingNow extends StatelessWidget {
-  FavoriteController favController = Get.find<FavoriteController>();
+  AuthController favController = Get.find<AuthController>();
   CardMoviesPlayingNow({
     Key? key,
     this.title,
@@ -23,7 +24,7 @@ class CardMoviesPlayingNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return GetBuilder<FavoriteController>(
+    return GetBuilder<AuthController>(
       builder: (_control) {
         return Stack(
           children: [
@@ -48,13 +49,15 @@ class CardMoviesPlayingNow extends StatelessWidget {
             Positioned(
               top: 5,
               right: 5,
-              child: !_control.movieIds.value.contains(id)
+              child: _control.userFavoriteIds == null
                   ? InkWell(
                       onTap: () {
+                        if (id != null) {
+                          _control.addFavorite(id ?? 0, rating ?? 0,
+                              title ?? '', imagePath ?? '');
+                        }
                         print("$id" +
                             " Favorilere eklendi.  Filmin Adı : $title");
-                        _control.addFavorite(
-                            id!, title ?? '', imagePath ?? '', rating ?? 0);
                       },
                       child: Container(
                         height: 40,
@@ -69,26 +72,52 @@ class CardMoviesPlayingNow extends StatelessWidget {
                         ),
                       ),
                     )
-                  : InkWell(
-                      onTap: () {
-                        print("$id" +
-                            " Favorilere çıkartıldı.  Filmin Adı : $title");
-                        _control.deleteFavorite(id);
-                      },
-                      child: Container(
-                        height: 40,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(10),
+                  : !_control.userFavoriteIds.contains(id)
+                      ? InkWell(
+                          onTap: () {
+                            if (id != null) {
+                              _control.addFavorite(id ?? 0, rating ?? 0,
+                                  title ?? '', imagePath ?? '');
+                            }
+                            print("$id" +
+                                " Favorilere eklendi.  Filmin Adı : $title");
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.black54,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            if (id != null) {
+                              _control.removeFavorite(id ?? 0, rating ?? 0,
+                                  title ?? '', imagePath ?? '');
+                            }
+                            print("$id" +
+                                " Favorilere eklendi.  Filmin Adı : $title");
+                          },
+                          child: Container(
+                            height: 40,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Icon(
+                              Icons.done,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
-                        child: Icon(
-                          Icons.done,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-            )
+            ),
           ],
         );
       },

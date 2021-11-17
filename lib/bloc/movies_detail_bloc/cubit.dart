@@ -22,6 +22,7 @@ class MoviesDetailCubit extends Cubit<MoviesDetailState> {
     try {
       emit(MoviesDetailLoadingState());
       final MoviesDetail? response = await _repository.getMovieDetail(id);
+      print(response?.posterPath);
       final MoviesImages? responseImages = await _repository.getMovieImages(id);
       final MoviesSimiliar? responseSimiliar =
           await _repository.getMoviesSimiliar(id);

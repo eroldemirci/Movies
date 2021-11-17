@@ -61,24 +61,28 @@ class LoginViewModel extends GetWidget<AuthController> {
     );
   }
 
-  Row registerRow() {
+  Widget registerRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(
-          'Hesabın yok mu?',
-          style: normalTextStyle,
+        Flexible(
+          child: Text(
+            'Hesabın yok mu?',
+            style: normalTextStyle,
+          ),
         ),
         SizedBox(
           width: 30,
         ),
-        TextButton(
-          onPressed: () {
-            Get.to(RegisterView());
-          },
-          child: Text(
-            'Kayıt Ol',
-            style: registerTextStyle,
+        Flexible(
+          child: TextButton(
+            onPressed: () {
+              Get.to(RegisterView());
+            },
+            child: Text(
+              'Kayıt Ol',
+              style: registerTextStyle,
+            ),
           ),
         )
       ],

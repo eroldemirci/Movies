@@ -7,7 +7,7 @@ import 'dart:convert';
 MoviesCasts moviesCastsFromJson(String str) =>
     MoviesCasts.fromJson(json.decode(str));
 
-String moviesCastsToJson(MoviesCasts data) => json.encode(data.toJson());
+
 
 class MoviesCasts {
   MoviesCasts({
@@ -30,15 +30,7 @@ class MoviesCasts {
             : List<Cast>.from(json["crew"].map((x) => Cast.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id == null ? null : id,
-        "cast": cast == null
-            ? null
-            : List<dynamic>.from(cast!.map((x) => x.toJson())),
-        "crew": crew == null
-            ? null
-            : List<dynamic>.from(crew!.map((x) => x.toJson())),
-      };
+  
 }
 
 class Cast {

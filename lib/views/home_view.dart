@@ -1,10 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:movies/controllers/auth_controller.dart';
-import 'package:movies/models/movies_detail.dart';
+
 import 'package:movies/widgets/user_favorites_card_widget.dart';
 import '../bloc/movies_bloc/cubit.dart';
 import '../bloc/movies_bloc/movies_state.dart';
@@ -31,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<MoviesPlayingNowCubit>(context);
-    FavoriteController controller = Get.put(FavoriteController());
+
     return SingleChildScrollView(
       physics: ScrollPhysics(),
       child: Column(
@@ -58,15 +61,22 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget userFavoriteMoviesRow() {
-    return GetBuilder<AuthController>(builder: (_controller) {
+    AuthController controller = Get.put(AuthController());
+    return GetBuilder<AuthController>(builder: (_) {
       return FirebaseAuth.instance.currentUser?.uid != null
           ? StreamBuilder<DocumentSnapshot>(
-              stream: _controller.favorites,
+              stream: controller.favorites,
               builder: (context, snapshot) {
-                List? favoriteId = snapshot.data?['favoriteMovies'];
+                List? favorites = snapshot.data?['data'];
+
                 if (snapshot.hasData) {
+                  if (favorites?.length != 0) {
+                    controller.setUserFavoriteIds(favorites);
+                  }
+
+                  print('Stream Çalıştı = ${_.userFavoriteIds}');
                   return Container(
-                    alignment: favoriteId?.length == 0
+                    alignment: favorites?.length == 0
                         ? Alignment.center
                         : Alignment.centerLeft,
                     width: double.maxFinite,
@@ -75,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     padding: EdgeInsets.symmetric(vertical: 20),
-                    child: favoriteId?.length != 0
+                    child: favorites?.length != 0
                         ? Container(
                             height: 250,
                             margin: const EdgeInsets.only(left: 8.0),
@@ -84,17 +94,10 @@ class _HomeViewState extends State<HomeView> {
                               shrinkWrap: true,
                               physics: BouncingScrollPhysics(),
                               itemCount:
-                                  favoriteId != null ? favoriteId.length : 0,
+                                  favorites != null ? favorites.length : 0,
                               itemBuilder: (context, index) {
-                                int? movieId = favoriteId?[index];
-                              _controller.getMovieDetail(movieId);
-                              MoviesDetail? movie = _controller.movieDetail.value;
-                                return UserFavoriteMoviesCard(
-                                  movieId: movieId,
-                                  imagePath: movie?.posterPath,
-                                  rating: movie?.voteAverage,
-                                  title: movie?.originalTitle,
-                                );
+                                return UserFavoriteCard(
+                                    favorites: favorites, index: index);
                               },
                               separatorBuilder: (context, index) {
                                 return SizedBox(

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:movies/models/movies_detail.dart';
 import 'package:movies/services/movies_services.dart';
 import 'package:movies/views/bottomNavBar_view.dart';
+import 'package:movies/widgets/user_favorites_card_widget.dart';
 
 import '../models/user_model.dart';
 
@@ -26,15 +27,18 @@ class AuthController extends GetxController {
   TextEditingController registerPasswordComfirmController =
       TextEditingController();
   TextEditingController registerNameController = TextEditingController();
+
   RxBool? root = false.obs;
   RxString? deneme = ''.obs;
   RxBool loginLoading = false.obs;
   RxBool registerLoading = false.obs;
   RxBool isLoginValidate = false.obs;
   RxBool isRegisterValidate = false.obs;
+  RxList<int> userFavoriteIds = <int>[].obs;
 
+  RxList<Map<String, dynamic>> userFavorites = <Map<String, dynamic>>[].obs;
   Stream<DocumentSnapshot> get favorites => _firebaseFirestore
-      .collection('users')
+      .collection('favorites')
       .doc(_auth.currentUser?.uid)
       .snapshots();
 
@@ -61,6 +65,66 @@ class AuthController extends GetxController {
         update();
       }
     });
+  }
+
+  setUserFavoriteIds(List<dynamic>? data) {
+    userFavoriteIds.clear();
+    print('gelen data = $data');
+
+    if (data != null) {
+      for (var i = 0; i < data.length; i++) {
+        userFavoriteIds.add(data[i]['id']);
+      }
+    }
+  }
+
+  printSomething(String yazi) {
+    print(yazi);
+  }
+
+  Future addFavorite(
+      int id, double vote, String title, String imagePath) async {
+    try {
+      Map<String, dynamic> data = {
+        'title': title,
+        'id': id,
+        'vote_average': vote,
+        'image_path': imagePath
+      };
+      await _firebaseFirestore
+          .collection('favorites')
+          .doc(_auth.currentUser?.uid)
+          .update({
+        'data': FieldValue.arrayUnion([data])
+      });
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
+    update();
+  }
+
+  Future removeFavorite(
+      int id, double vote, String title, String imagePath) async {
+    try {
+      Map<String, dynamic> data = {
+        'title': title,
+        'id': id,
+        'vote_average': vote,
+        'image_path': imagePath
+      };
+      await _firebaseFirestore
+          .collection('favorites')
+          .doc(_auth.currentUser?.uid)
+          .update({
+        'data': FieldValue.arrayRemove([data])
+      });
+    } on FirebaseException catch (e) {
+      print(e.message);
+    }
+    if (userFavoriteIds.length == 1) {
+      userFavoriteIds.clear();
+    }
+    update();
   }
 
   Future getMovieDetail(int? movieId) async {
@@ -111,15 +175,22 @@ class AuthController extends GetxController {
         print("Firebase User bilgileri Email :  ${_userResult.user?.email}");
 
         if (_userResult.user?.uid != userModel.value?.id) {
-          Map<String, dynamic> data = {
+          Map<String, dynamic> userData = {
             'email': email,
             'name': name,
             'favoriteMovies': [],
           };
+          Map<String, dynamic> favoriteData = {
+            'data': [],
+          };
           await _firebaseFirestore
               .collection('users')
               .doc(_userResult.user?.uid)
-              .set(data);
+              .set(userData);
+          await _firebaseFirestore
+              .collection('favorites')
+              .doc(_userResult.user?.uid)
+              .set(favoriteData);
           update();
           if (_auth.currentUser?.uid != null) {
             Get.offAll(BottomNavBar());
@@ -188,16 +259,23 @@ class AuthController extends GetxController {
         userModel.value =
             await _authService.getUserFromFirebase(googleUser?.uid);
         if (userModel.value?.id != googleUser?.uid) {
-          Map<String, dynamic> data = {
+          Map<String, dynamic> userData = {
             'email': googleUser?.email,
             'name': googleUser?.displayName,
             'favoriteMovies': [],
+          };
+          Map<String, dynamic> favoriteData = {
+            'data': [],
           };
           print("Firebase User bilgileri Email :  ${googleUser?.email}");
           await _firebaseFirestore
               .collection('users')
               .doc(googleUser?.uid)
-              .set(data);
+              .set(userData);
+          await _firebaseFirestore
+              .collection('favorites')
+              .doc(googleUser?.uid)
+              .set(favoriteData);
           update();
         } else {
           print('kullanıcı zaten kayıtlı');
