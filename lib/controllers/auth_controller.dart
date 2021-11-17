@@ -67,7 +67,7 @@ class AuthController extends GetxController {
     });
   }
 
-  setUserFavoriteIds(List<dynamic>? data) {
+  Future setUserFavoriteIds(List<dynamic>? data) async {
     userFavoriteIds.clear();
     print('gelen data = $data');
 
@@ -83,7 +83,7 @@ class AuthController extends GetxController {
   }
 
   Future addFavorite(
-      int id, double vote, String title, String imagePath) async {
+      int id, dynamic vote, String title, String imagePath) async {
     try {
       Map<String, dynamic> data = {
         'title': title,
@@ -104,7 +104,7 @@ class AuthController extends GetxController {
   }
 
   Future removeFavorite(
-      int id, double vote, String title, String imagePath) async {
+      int id, dynamic vote, String title, String imagePath) async {
     try {
       Map<String, dynamic> data = {
         'title': title,

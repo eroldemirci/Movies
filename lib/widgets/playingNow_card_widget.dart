@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movies/controllers/auth_controller.dart';
+import 'package:movies/views/login_view.dart';
 import '../database/controller.dart';
 
 import '../utils/textStyles.dart';
@@ -49,15 +51,12 @@ class CardMoviesPlayingNow extends StatelessWidget {
             Positioned(
               top: 5,
               right: 5,
-              child: _control.userFavoriteIds == null
+              child: FirebaseAuth.instance.currentUser?.uid == null
                   ? InkWell(
                       onTap: () {
                         if (id != null) {
-                          _control.addFavorite(id ?? 0, rating ?? 0,
-                              title ?? '', imagePath ?? '');
+                          Get.to(UserLoginView());
                         }
-                        print("$id" +
-                            " Favorilere eklendi.  Filmin Adı : $title");
                       },
                       child: Container(
                         height: 40,

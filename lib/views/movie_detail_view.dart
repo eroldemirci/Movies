@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 import 'package:intl/intl.dart';
+import 'package:movies/controllers/auth_controller.dart';
 import '../bloc/movies_detail_bloc/cubit.dart';
 import '../bloc/movies_detail_bloc/movie_detail_state.dart';
 import '../database/controller.dart';
@@ -141,7 +142,7 @@ class _MovieDetailViewState extends State<MovieDetailView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               dateAndMinuteRow(state),
-              GetBuilder<FavoriteController>(
+              GetBuilder<AuthController>(
                 builder: (_controller) {
                   return CustomWidgets(context).addToWatchListButton(
                       _controller, state.response ?? MoviesDetail());

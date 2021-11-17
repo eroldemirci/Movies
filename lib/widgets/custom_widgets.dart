@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movies/controllers/auth_controller.dart';
 import '../bloc/movies_detail_bloc/movie_detail_state.dart';
 import '../bloc/movies_search_bloc/movies_search_state.dart';
 import '../database/controller.dart';
@@ -45,12 +46,16 @@ class CustomWidgets {
           );
   }
 
-  Widget addToWatchListButton(
-      FavoriteController _controller, MoviesDetail movie) {
-    if (_controller.movieIds.value.contains(movie.id)) {
+  Widget addToWatchListButton(AuthController _controller, MoviesDetail movie) {
+    if (_controller.userFavoriteIds.contains(movie.id)) {
       return InkWell(
         onTap: () {
-          _controller.deleteFavorite(movie.id);
+          _controller.removeFavorite(
+            movie.id ?? 0,
+            movie.voteAverage ?? 0,
+            movie.title ?? '',
+            movie.posterPath ?? '',
+          );
         },
         child: Container(
           padding: EdgeInsets.only(top: 5, bottom: 5, right: 8, left: 5),
@@ -74,8 +79,12 @@ class CustomWidgets {
     } else {
       return InkWell(
         onTap: () {
-          _controller.addFavorite(movie.id!, movie.title!,
-              movie.posterPath ?? '', movie.voteAverage ?? 0);
+          _controller.addFavorite(
+            movie.id ?? 0,
+            movie.voteAverage ?? 0,
+            movie.title ?? '',
+            movie.posterPath ?? '',
+          );
         },
         child: Container(
           padding: EdgeInsets.only(top: 5, bottom: 5, right: 8, left: 5),
